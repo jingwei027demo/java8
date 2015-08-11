@@ -26,6 +26,6 @@ public class FunctionalRuleTest {
 	public void testOverload() {
 		overloadMethod((Object x) -> true);
 		overloadMethod((int x) -> true);
-//		overloadMethod(x -> true);
+//		overloadMethod(x -> true); // can not default (Object ? int ?)
 	}
 }

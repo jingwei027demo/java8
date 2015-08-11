@@ -6,13 +6,9 @@ import org.junit.Test;
 public class DefaultMethodTest {
 
 	interface Father {
-		public void message(String body);
-
 		public default void welcome() {
-			message("Father: Hi!");
+			System.out.println("Father");
 		}
-
-		public String getLastMessage();
 	}
 
 	interface Mother {
@@ -24,43 +20,22 @@ public class DefaultMethodTest {
 	interface Child extends Father {
 		@Override
 		public default void welcome() {
-			message("Child: Hi!");
+			System.out.println("Child");
 		}
 	}
 
 	class FatherImpl implements Father {
-		String body = null;
 
-		@Override
-		public void message(String body) {
-			this.body = body;
-		}
-
-		@Override
-		public String getLastMessage() {
-			return body;
-		}
 	}
 
 	class ChildImpl implements Child {
-		String body = null;
 
-		@Override
-		public void message(String body) {
-			this.body = body;
-		}
-
-		@Override
-		public String getLastMessage() {
-			return body;
-		}
 	}
 
 	class Father2Impl extends FatherImpl {
-		/** class first **/
 		@Override
 		public void welcome() {
-			message("Father2: Hi!");
+			System.out.println("Father2Impl");
 		}
 	}
 
@@ -72,16 +47,6 @@ public class DefaultMethodTest {
 		String body = null;
 
 		@Override
-		public void message(String body) {
-			this.body = body;
-		}
-
-		@Override
-		public String getLastMessage() {
-			return body;
-		}
-
-		@Override
 		public void welcome() {
 			Mother.super.welcome();
 		}
@@ -89,24 +54,35 @@ public class DefaultMethodTest {
 
 	@Test
 	public void testDefaultMethod() {
+		/**
+		 * FatherImpl implements Father
+		 */
 		Father f = new FatherImpl();
-		f.welcome();
-		System.out.println(f.getLastMessage()); // Father: Hi!
+		f.welcome();	// Father
 
+		/**
+		 * ChildImpl implements Child
+		 */
 		Child c = new ChildImpl();
-		c.welcome();
-		System.out.println(c.getLastMessage()); // Child: Hi!
+		c.welcome();	// Child
 
+		/**
+		 * Father2Impl extends FatherImpl
+		 */
 		Father f2 = new Father2Impl();
-		f2.welcome();
-		System.out.println(f2.getLastMessage()); // Father2: Hi!
+		f2.welcome();	// Father2Impl
 
+		/**
+		 * Father3Impl extends Father2Impl implements Child
+		 */
 		Father f3 = new Father3Impl();
-		f3.welcome();
-		System.out.println(f3.getLastMessage()); // Father2(when Father2Impl override welcome) / Child: Hi!
+		f3.welcome();	// Father2Impl (*) concreate override method win default method
 
+		/**
+		 * FatherMotherImpl implements Father, Mother
+		 */
 		FatherMotherImpl fm = new FatherMotherImpl();
-		fm.welcome(); // Mother
+		fm.welcome();	// Mother
 	}
 
 }

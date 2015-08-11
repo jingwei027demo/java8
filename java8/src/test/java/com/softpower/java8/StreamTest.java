@@ -33,6 +33,7 @@ public class StreamTest {
 		for (int i=0; i<size; i++) {
 			cols.add(i);
 		}
+
 		return cols;
 	}
 
@@ -115,11 +116,13 @@ public class StreamTest {
 	}
 
 	private Function<String, String> toUpperCase() {
-		return t -> t.toUpperCase();
+		return t -> {
+			return t.toUpperCase();
+		};
 	}
 
 	private Function<String, String> wrapSomething() {
-		return t -> "[" + t.toUpperCase() + "]";
+		return t -> "[" + t + "]";
 	}
 
 	private List<String> methodLambdaMap(List<String> cols, boolean parallel) {
